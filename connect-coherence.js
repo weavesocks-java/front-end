@@ -21,8 +21,8 @@ module.exports = function(session) {
     }
 
     get(sid, cb = noop) {
-
       let data = this.cache.get(sid);
+      console.log("CoherenceStore.get: " + sid + " => " + data)
       if (!data) return cb()
 
       let result
@@ -38,6 +38,7 @@ module.exports = function(session) {
       let data
       try {
         data = this.serializer.stringify(sess)
+        console.log("CoherenceStore.set: " + sid + " <= " + data)
       } catch (er) {
         return cb(er)
       }
