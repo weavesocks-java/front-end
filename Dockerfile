@@ -1,7 +1,7 @@
 FROM iad.ocir.io/odx-stateservice/test/coherence:14.1.1.0.0-b74871
 ENV NODE_ENV "production"
-ENV PORT 8079
-EXPOSE 8079
+ENV PORT 7001
+EXPOSE 7001
 
 USER root
 
