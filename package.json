@@ -6,15 +6,16 @@
   "scripts": {
     "test": "istanbul cover node_modules/.bin/_mocha -- test/*_test.js test/api/*_test.js",
     "coverage": "istanbul cover --report cobertura node_modules/.bin/_mocha -- test/*_test.js test/api/*_test.js && mocha test/*_test.js test/api/*_test.js --reporter mocha-junit-reporter --reporter-options mochaFile=./results/test-results.xml",
-    "start": "node server.js"
+    "start": "node --polyglot --jvm server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/weaveworks/microservices-demo"
+    "url": "https://github.com/weavesocks-java/microservices-demo"
   },
   "contributors": [
     "Ian Crosby <ian.daniel.crosby@gmail.com>",
-    "Carlos León <mail@carlosleon.info> (carlosleon.info)"
+    "Carlos León <mail@carlosleon.info> (carlosleon.info)",
+    "Aleks Seovic <aleks@seovic.com>"
   ],
   "license": "MIT",
   "dependencies": {
