@@ -7,6 +7,7 @@ var request      = require("request")
   , cookieParser = require("cookie-parser")
   , session      = require("express-session")
   , config       = require("./config")
+  , coherence    = require("./coherence")
   , helpers      = require("./helpers")
   , cart         = require("./api/cart")
   , catalogue    = require("./api/catalogue")
@@ -15,12 +16,18 @@ var request      = require("request")
   , metrics      = require("./api/metrics")
   , app          = express()
 
+// start Coherence cache server
+coherence.DefaultCacheServer.startServerDaemon().waitForServiceStart();
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);
 app.use(express.static("public"));
-if(process.env.SESSION_REDIS) {
-    console.log('Using the redis based session manager');
+if(process.env.SESSION_COHERENCE) {
+    console.log('Using the Coherence based session manager');
+    app.use(session(config.session_coherence));
+}
+else if(process.env.SESSION_REDIS) {
+    console.log('Using the Redis based session manager');
     app.use(session(config.session_redis));
 }
 else {
