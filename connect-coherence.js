@@ -21,17 +21,21 @@ module.exports = function(session) {
     }
 
     get(sid, cb = noop) {
-      let data = this.cache.get(sid);
-      console.log("CoherenceStore.get: " + sid + " => " + data)
-      if (!data) return cb()
+      debugger;
+      let future = this.cache.async().get(sid).whenCompleteAsync(function(data, err) {
+        debugger;
+        console.log("CoherenceStore.get: " + sid + " => " + data + ", " + err)
+        if (!data) return cb(err)
 
-      let result
-      try {
-        result = this.serializer.parse(data)
-      } catch (err) {
-        return cb(err)
-      }
-      return cb(null, result)
+        let result
+        try {
+          result = this.serializer.parse(data)
+        } catch (err) {
+          return cb(err)
+        }
+        return cb(null, result)
+      });
+      console.log("CoherenceStore.get: future = " + future)
     }
 
     set(sid, sess, cb = noop) {
@@ -43,10 +47,15 @@ module.exports = function(session) {
         return cb(er)
       }
 
-      this.cache.put(sid, data, this.ttl)
+      debugger;
+      let future = this.cache.async().put(sid, data, this.ttl).whenCompleteAsync(function(data, err) {
+        console.log("CoherenceStore.set: " + data + ", " + err)
+      });
+      console.log("CoherenceStore.set: future = " + future)
     }
 
     touch(sid, sess, cb = noop) {
+      console.log("CoherenceStore.touch: " + sid)
       if (this.disableTouch) return cb()
 
       // Since we need to update the expires value on the cookie,
@@ -55,24 +64,29 @@ module.exports = function(session) {
     }
 
     destroy(sid, cb = noop) {
+      console.log("CoherenceStore.destroy: " + sid)
       this.cache.remove(sid)
       cb()
     }
 
     clear(cb = noop) {
+      console.log("CoherenceStore.clear")
       this.cache.clear()
       cb()
     }
 
     length(cb = noop) {
+      console.log("CoherenceStore.length")
       return cb(null, this.cache.size())
     }
 
     ids(cb = noop) {
+      console.log("CoherenceStore.ids")
       return cb(null, this.cache.keySet())
     }
 
     all(cb = noop) {
+      console.log("CoherenceStore.all")
     }
   }
 

@@ -17,8 +17,12 @@ var request      = require("request")
   , app          = express()
 
 // start Coherence cache server
-coherence.HealthMBeanFactory.registerHealthMBean();
+//coherence.HealthMBeanFactory.registerHealthMBean();
 coherence.DefaultCacheServer.startServerDaemon().waitForServiceStart();
+
+process.on("error", function(err) {
+  console.log(err);
+});
 
 app.use(helpers.rewriteSlash);
 app.use(metrics);
